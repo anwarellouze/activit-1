@@ -1,0 +1,64 @@
+<div class="container">
+  <header>
+    <h1>Phone<br><span>Accessories</span></h1>
+    <span class="header-tag"><span class="status-dot"></span>Shop Admin</span>
+  </header>
+
+  <section class="articles-section">
+    <p class="section-title">Liste des Articles</p>
+
+    <div class="search-bar">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="mainSearch" name="mainSearch" placeholder="Rechercher par nom..." (input)="onSearch($event)">
+      </div>
+    </div>
+
+    <ul class="article-list">
+      @for (item of filteredArticles(); track item.id) {
+        <li class="article-item">
+          <span class="article-id">#{{ item.id }}</span>
+          <span class="article-name">{{ item.name }}</span>
+          <span class="article-desc">{{ item.description }}</span>
+          <span class="article-price">{{ item.price | number:'1.2-2' }} DT</span>
+          <div class="article-actions">
+            <button type="button" class="btn btn-edit" (click)="editArticle(item)">Edit</button>
+            <button type="button" class="btn btn-delete" (click)="deleteArticle(item.id)">Del</button>
+          </div>
+        </li>
+      } @empty {
+        <div class="empty-state">Aucun article trouvé.</div>
+      }
+    </ul>
+  </section>
+
+  <section class="form-section">
+    <p class="section-title">{{ newArticle.id === 0 ? 'Ajouter' : 'Modifier' }} Article</p>
+    
+    <form (submit)="$event.preventDefault()">
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="itemName">Nom de l'accessoire</label>
+          <input type="text" id="itemName" name="itemName" [(ngModel)]="newArticle.name" placeholder="ex: Coque Silicone" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="itemPrice">Prix (DT)</label>
+          <input type="number" id="itemPrice" name="itemPrice" [(ngModel)]="newArticle.price" autocomplete="off">
+        </div>
+        <div class="input-group description-group">
+          <label for="itemDesc">Description</label>
+          <input type="text" id="itemDesc" name="itemDesc" [(ngModel)]="newArticle.description" placeholder="Détails..." autocomplete="off">
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        @if (newArticle.id === 0) {
+          <button type="button" class="btn btn-primary" (click)="addArticle()">+ Ajouter</button>
+        } @else {
+          <button type="button" class="btn btn-primary" (click)="updateArticle()">↻ Mettre à jour</button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">Annuler</button>
+        }
+      </div>
+    </form>
+  </section>
+</div>
